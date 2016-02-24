@@ -1,0 +1,14 @@
+{
+  "name": "november-nineteenth",
+  "version": "1.0.0",
+  "description": "Somebody has to tell them.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Colin Gourlay",
+  "license": "ISC",
+  "dependencies": {
+    "twitter": "^1.2.1"
+  }
+}
