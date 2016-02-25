@@ -51,7 +51,7 @@ function reply(tweet) {
     console.log('Replying with: "' + status + '"');
 
     twitter.post('statuses/update', {
-        in_reply_to_status_id: tweet.id,
+        in_reply_to_status_id: tweet.id_str,
         status: '@' + tweet.user.screen_name + ' ' + status
     }, NOOP);
 }
