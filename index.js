@@ -10,7 +10,7 @@ var REPLIES = [
     'Hey {{name}}, International Men\'s Day is November 19th.',
     'International Men\'s Day is November 19th. Only {{days}} sleeps to go! 💤',
     'I have great news for you, {{name}}. International Men\'s Day is November 19th.',
-    'On November 19th all your dreams will come true. It\'ll be International Men\'s day! 👬',
+    'On November 19th all your dreams will come true. It\'ll be International Men\'s Day! 👬',
     'You only have to wait {{days}} days! International Men\'s Day is November 19th.',
     'International Men\'s Day is November 19th, only {{days}} days away! Get excited, {{name}}!!!',
     'Clear your schedule on November 19th, {{name}}. It\'s International Men\'s Day, and we\'re gonna party! 🎉'
@@ -36,7 +36,7 @@ function onTweet(tweet) {
 
     console.log('Query from @' + tweet.user.screen_name + ': "' + tweet.text + '"');
 
-    reply(tweet);
+    setTimeout(reply, 60000, tweet);
 }
 
 function reply(tweet) {
