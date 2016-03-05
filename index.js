@@ -4,7 +4,7 @@ var config = require('./config');
 var PHRASE = 'international men\'s day';
 var PHRASE_REGEX = new RegExp(PHRASE);
 var QUESTIONS_REGEX = /what|when|why|how/;
-var IGNORE_REGEX = /november|19/;
+var IGNORE_REGEX = /november|19|say/;
 var ONE_DAY= 1000 * 60 * 60 * 24;
 var REPLIES = [
     'Hey {{name}}, International Men\'s Day is November 19th.',
