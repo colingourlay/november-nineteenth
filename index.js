@@ -3,8 +3,8 @@ var config = require('./config');
 
 var PHRASE = 'international men\'s day';
 var PHRASE_REGEX = new RegExp(PHRASE);
-var QUESTIONS_REGEX = /what|when|why|how/;
-var FALSE_POSITIVES_REGEX = /guy|bro|dude|who|ask|say|nov|19/;
+var QUESTIONS_REGEX = /when|why/;
+var FALSE_POSITIVES_REGEX = /"|guy|bro|dude|who|ask|say|nov|19/;
 var QUESTION_REPLIES = [
     'Hey {{name}}, International Men\'s Day is November 19th.',
     'International Men\'s Day is November 19th. Only {{days}} sleeps to go! 💤',
