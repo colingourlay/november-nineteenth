@@ -1,6 +1,7 @@
 var Twitter = require('twitter');
 var config = require('./config');
 
+var FATHER = 'Herring1967';
 var PHRASE = 'international men\'s day';
 var PHRASE_REGEX = new RegExp(PHRASE);
 var QUESTIONS_REGEX = /when|why/;
@@ -37,7 +38,8 @@ function onTweet(tweet) {
 
     if (text.match(PHRASE_REGEX) === null ||
         text.match(QUESTIONS_REGEX) === null ||
-        tweet.retweeted_status != null) {
+        tweet.retweeted_status != null ||
+        tweet.user.screen_name === FATHER) {
 
         return;
 
