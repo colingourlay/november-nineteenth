@@ -5,7 +5,7 @@ var FATHER = 'Herring1967';
 var PHRASE = 'international men\'s day';
 var PHRASE_REGEX = new RegExp(PHRASE);
 var QUESTIONS_REGEX = /when|why/;
-var FALSE_POSITIVES_REGEX = /"|guy|bro|dude|who|ask|say|nov|19/;
+var FALSE_POSITIVES_REGEX = /"|guy|bro|dude|who|ask|tweet|tell|say|nov|19|Herring/;
 var QUESTION_REPLIES = [
     'Hey {{name}}, International Men\'s Day is November 19th.',
     'International Men\'s Day is November 19th. Only {{days}} sleeps to go! 💤',
@@ -49,11 +49,11 @@ function onTweet(tweet) {
 
         setTimeout(reply, 60000, tweet, false);
 
-    } else {
+    }/* else {
 
         setTimeout(reply, 60000, tweet, true);
 
-    }
+    }*/
 
 }
 
