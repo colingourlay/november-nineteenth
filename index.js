@@ -5,8 +5,8 @@ var FATHER = 'Herring1967';
 var PHRASE = 'international men\'s day';
 var PHRASE_REGEX = new RegExp(PHRASE);
 var QUESTIONS_REGEX = /when|why/;
-var FALSE_POSITIVES_REGEX = /"|guy|bro|dude|who|ask|tweet|tell|say|nov|19|Herring/;
-var REPEAT_REGEX = /international/g;
+var FALSE_POSITIVES_REGEX = /"|guy|bro|dude|who|was|ask|tweet|tell|say|know|nov|19|Herring/;
+var REPEAT_REGEX = /day/g;
 var QUESTION_REPLIES = [
     'Hey {{name}}, International Men\'s Day is November 19th.',
     'International Men\'s Day is November 19th. Only {{days}} sleeps to go! 💤',
