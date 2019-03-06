@@ -10,7 +10,7 @@ The comedian Richard Herring has been [doing this job manually](http://www.teleg
 
 Clone this repo.
 
-Copy `config.example.js` to `config.js` and fill out the fields with tokens/keys you can create [here](https://apps.twitter.com/).
+Copy `config.example.js` to `config.js` and fill out the `twitter` fields with tokens/keys you can create [here](https://apps.twitter.com/) (with a Twitter developer account).
 
 Then, in your terminal, `cd` into the project directory and run:
 
