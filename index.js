@@ -6,13 +6,18 @@ const FATHER = 'Herring1967';
 const PHRASE = "international men's day";
 const PHRASE_REGEX = new RegExp(PHRASE);
 const QUESTIONS_REGEX = /when|why/;
-const FALSE_POSITIVES_REGEX = /"|guy|bro|dude|who|was|ask|tweet|tell|say|know|nov|19|richard|herring/;
+const FALSE_POSITIVES_REGEX = /guy|bro|dude|who|was|ask|tweet|tell|say|know|nov|19|richard|herring|find/;
 const REPEAT_REGEX = /international|day/g;
+const SINGLE_QUOTES_REGEX = /'|‘|’/g;
+const DOUBLE_QUOTES_REGEX = /"|“|”/g;
 const TEMPLATES = [
-  "Hey {{name}}, International Men's Day is November 19th.",
   "International Men's Day is November 19th. Only {{days}} sleeps to go! 💤",
+  "Hey {{name}}, International Men's Day is November 19th.",
+  "International Men's Day is November 19th. Only {{days}} days to plan your awareness campaign! 📣",
   "I have great news for you, {{name}}. International Men's Day is November 19th.",
-  "On November 19th all your dreams will come true. It'll be International Men's Day! 👬",
+  "International Men's Day is November 19th. I'm counting on you to spread the word, {{name}}.",
+  "On November 19th all your dreams will come true. It'll be International Men's Day!",
+  "International Men's Day is November 19th. I hope you've started planning your men's charity fundraiser! 💰",
   "You only have to wait {{days}} days! International Men's Day is November 19th.",
   "International Men's Day is November 19th, only {{days}} days away! Get excited, {{name}}!!!",
   "Clear your schedule on November 19th, {{name}}. It's International Men's Day, and we're gonna party! 🎉"
@@ -42,6 +47,8 @@ function onTweet(tweet) {
     text.match(QUESTIONS_REGEX) === null ||
     text.match(FALSE_POSITIVES_REGEX) !== null ||
     checkRepeated(text) ||
+    checkQuotes(text) ||
+    checkAwareness(text) ||
     checkLinks(tweet) ||
     checkWhitelist(tweet.user.screen_name)
   ) {
@@ -112,6 +119,19 @@ function checkRepeated(text) {
   if (repeats && repeats.length > 1 && repeats.length > Array.from(new Set(repeats)).length) {
     return true;
   }
+}
+
+function checkQuotes(text) {
+  const singleQuotes = text.match(SINGLE_QUOTES_REGEX) || [];
+  const doubleQuotes = text.match(DOUBLE_QUOTES_REGEX) || [];
+
+  return singleQuotes.length > 2 || doubleQuotes.length > 1;
+}
+
+function checkAwareness(text) {
+  const lastIndexOfIs = text.lastIndexOf('is');
+
+  return lastIndexOfIs > -1 && lastIndexOfIs > text.indexOf('day');
 }
 
 function checkLinks(tweet) {
