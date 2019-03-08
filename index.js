@@ -1,8 +1,7 @@
 const Twitter = require('twitter');
 const config = require('./config');
 
-// const IS_DEV = process.env.NODE_ENV === 'development';
-const IS_DEV = true;
+const IS_DEV = process.env.NODE_ENV === 'development';
 const FATHER = 'Herring1967';
 const PHRASES = ['', "'", '’'].map(x => `international men${x}s day`).join(',');
 const PHRASES_REGEX = /international men('|‘|’)?s day/;
