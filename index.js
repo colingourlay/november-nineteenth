@@ -48,7 +48,7 @@ function onTweet(tweet) {
     text.match(FALSE_POSITIVES_REGEX) !== null ||
     checkRepeated(text) ||
     checkQuotes(text) ||
-    checkCase(text) ||
+    checkSpongemock(text) ||
     checkAwareness(text) ||
     checkLinks(tweet) ||
     checkWhitelist(tweet.user.screen_name)
@@ -108,8 +108,10 @@ function checkWhitelist(screen_name) {
   return config.whitelist.indexOf(screen_name) < 0;
 }
 
-function checkCase(text) {
-  return (text.match(UPPERCASE_CHARACTERS_REGEX) || 'A').length / text.length > 0.25;
+function checkSpongemock(text) {
+  const openingText = text.slice(0, 48);
+
+  return (openingText.match(UPPERCASE_CHARACTERS_REGEX) || 'A').length / openingText.length > 0.25;
 }
 
 function checkRepeated(text) {
@@ -134,5 +136,7 @@ function checkAwareness(text) {
 }
 
 function checkLinks(tweet) {
-  return tweet.entities && tweet.entities.urls.length > 0 && !tweet.quoted_status;
+  return (
+    (tweet.media && tweet.media.length) || (tweet.entities && tweet.entities.urls.length > 0 && !tweet.quoted_status)
+  );
 }
