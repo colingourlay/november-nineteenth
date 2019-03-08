@@ -1,15 +1,17 @@
 const Twitter = require('twitter');
 const config = require('./config');
 
-const IS_DEV = process.env.NODE_ENV === 'development';
+// const IS_DEV = process.env.NODE_ENV === 'development';
+const IS_DEV = true;
 const FATHER = 'Herring1967';
-const PHRASE = "international men's day";
-const PHRASE_REGEX = new RegExp(PHRASE);
+const PHRASES = ['', "'", '’'].map(x => `international men${x}s day`).join(',');
+const PHRASES_REGEX = /international men('|‘|’)?s day/;
 const QUESTIONS_REGEX = /when|why/;
 const FALSE_POSITIVES_REGEX = /guy|bro|dude|who|was|ask|tweet|tell|say|know|nov|19|richard|herring|find/;
 const REPEAT_REGEX = /international|day/g;
 const SINGLE_QUOTES_REGEX = /'|‘|’/g;
 const DOUBLE_QUOTES_REGEX = /"|“|”/g;
+const UPPERCASE_CHARACTERS_REGEX = /[A-Z]/g;
 const TEMPLATES = [
   "International Men's Day is November 19th. Only {{days}} sleeps to go! 💤",
   "Hey {{name}}, International Men's Day is November 19th.",
@@ -22,7 +24,6 @@ const TEMPLATES = [
   "International Men's Day is November 19th, only {{days}} days away! Get excited, {{name}}!!!",
   "Clear your schedule on November 19th, {{name}}. It's International Men's Day, and we're gonna party! 🎉"
 ];
-const IWD_FOOTER = ' #IWD2019 #BalanceForBetter';
 const ONE_DAY = 1000 * 60 * 60 * 24;
 const NOOP = function() {};
 
@@ -30,7 +31,7 @@ let nextTemplateIndex = 0;
 
 const twitter = new Twitter(config.twitter);
 
-twitter.stream('statuses/filter', { track: PHRASE }, onStream);
+twitter.stream('statuses/filter', { track: PHRASES }, onStream);
 
 function onStream(stream) {
   stream.on('data', onTweet);
@@ -38,16 +39,17 @@ function onStream(stream) {
 }
 
 function onTweet(tweet) {
-  const text = (tweet.truncated || tweet.text).toLowerCase();
+  const text = (tweet.truncated ? tweet.extended_tweet.full_text : tweet.text).toLowerCase();
 
   if (
+    text.match(PHRASES_REGEX) === null ||
     tweet.retweeted_status != null ||
     tweet.user.screen_name === FATHER ||
-    text.match(PHRASE_REGEX) === null ||
     text.match(QUESTIONS_REGEX) === null ||
     text.match(FALSE_POSITIVES_REGEX) !== null ||
     checkRepeated(text) ||
     checkQuotes(text) ||
+    checkCase(text) ||
     checkAwareness(text) ||
     checkLinks(tweet) ||
     checkWhitelist(tweet.user.screen_name)
@@ -59,15 +61,9 @@ function onTweet(tweet) {
 }
 
 function reply(tweet) {
-  const days = getDays();
-  let status = getNextTemplate()
+  const status = getNextTemplate()
     .replace('{{name}}', tweet.user.name.split(' ')[0])
-    .replace('{{days}}', days);
-
-  // IWD is 256 days before IMD, so add IWD hashtags close to the date
-  if (days < 264 && days > 254) {
-    status += IWD_FOOTER;
-  }
+    .replace('{{days}}', getDays());
 
   if (IS_DEV) {
     console.log('Tweet from @' + tweet.user.screen_name + ': "' + (tweet.truncated || tweet.text) + '"');
@@ -113,6 +109,10 @@ function checkWhitelist(screen_name) {
   return config.whitelist.indexOf(screen_name) < 0;
 }
 
+function checkCase(text) {
+  return (text.match(UPPERCASE_CHARACTERS_REGEX) || 'A').length / text.length > 0.25;
+}
+
 function checkRepeated(text) {
   const repeats = text.match(REPEAT_REGEX);
 
@@ -129,7 +129,7 @@ function checkQuotes(text) {
 }
 
 function checkAwareness(text) {
-  const lastIndexOfIs = text.lastIndexOf('is');
+  const lastIndexOfIs = text.lastIndexOf(' is ');
 
   return lastIndexOfIs > -1 && lastIndexOfIs > text.indexOf('day');
 }
