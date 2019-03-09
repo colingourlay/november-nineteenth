@@ -38,18 +38,19 @@ function onStream(stream) {
 }
 
 function onTweet(tweet) {
-  const text = (tweet.truncated ? tweet.extended_tweet.full_text : tweet.text).toLowerCase();
+  const text = tweet.truncated ? tweet.extended_tweet.full_text : tweet.text;
+  const textLC = text.toLowerCase();
 
   if (
-    text.match(PHRASES_REGEX) === null ||
+    textLC.match(PHRASES_REGEX) === null ||
     tweet.retweeted_status != null ||
     tweet.user.screen_name === FATHER ||
-    text.match(QUESTIONS_REGEX) === null ||
-    text.match(FALSE_POSITIVES_REGEX) !== null ||
-    checkRepeated(text) ||
+    textLC.match(QUESTIONS_REGEX) === null ||
+    textLC.match(FALSE_POSITIVES_REGEX) !== null ||
+    checkRepeated(textLC) ||
     checkQuotes(text) ||
     checkSpongemock(text) ||
-    checkAwareness(text) ||
+    checkAwareness(textLC) ||
     checkLinks(tweet) ||
     checkWhitelist(tweet.user.screen_name)
   ) {
